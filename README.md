@@ -1,5 +1,6 @@
 # python for spiders
 
 '''
-The repository is to store spider core
+Now is better than never.
+Although never is often better than *right* now.
 '''
