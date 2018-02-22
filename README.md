@@ -1,4 +1,4 @@
-# python for spiders
+# python for spider
 
 '''
 Now is better than never.
