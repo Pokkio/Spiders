@@ -19,7 +19,8 @@ class Proxies(object):
     def __init__(self, page=3):
         self.dbs = new_session()
         self.page = page
-        self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'}
+        self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64)'
+                                      ' AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'}
 
     def get_proxies_nn(self):
         '''获取高匿代理'''
@@ -29,7 +30,7 @@ class Proxies(object):
         pattern = re.compile(r'>(\S*)<')
         while page < page_stop:
             url = 'http://www.xicidaili.com/nn/%s' % page
-            html = requests.get(url, headers=self.headers).content
+            html = requests.get(url, headers=self.headers, verify=False).content
             soup = BeautifulSoup(html, 'lxml')
             ip_list = soup.find(id='ip_list')
             for odd in ip_list.find_all(class_='odd'):
@@ -54,7 +55,7 @@ class Proxies(object):
         pattern = re.compile(r'>(\S*)<')
         while page < page_stop:
             url = 'http://www.xicidaili.com/wn/%s' % page
-            html = requests.get(url, headers=self.headers).content
+            html = requests.get(url, headers=self.headers, verify=False).content
             soup = BeautifulSoup(html, 'lxml')
             ip_list = soup.find(id='ip_list')
             for odd in ip_list.find_all(class_='odd'):
@@ -80,7 +81,7 @@ class Proxies(object):
             try:
                 if requests.get('https://www.baidu.com', proxies=proxy,
                                 timeout=4,
-                                headers={'Connection': 'close'}).status_code == 200:
+                                headers={'Connection': 'close'}, verify=False).status_code == 200:
                     print('already update %s' % proxy)
                     update_proxy = {
                         'id': record.id,
@@ -103,4 +104,3 @@ class Proxies(object):
         self.get_proxies_nn()
         self.get_proxies_wn()
         self.verify_proxies()
-

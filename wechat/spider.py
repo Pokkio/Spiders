@@ -3,8 +3,8 @@
 @Author: Clay
 @Module Function: 获取微信好友信息及搜狗公众号文章
 @Last Modified By: Clay
-@Last Modified Time: 2018-10-17
-@Last Modified Content: 增加判断公众号文章的另一种结构
+@Last Modified Time: 2018-10-22
+@Last Modified Content: 添加可以使用手动输入代理
 '''
 import itchat
 import os
@@ -18,13 +18,13 @@ import re
 import time
 
 
-class WeChat(object):
+class WeChatSogou(object):
 
     def __init__(self):
         self.abs_path = os.path.abspath(os.path.dirname(__file__))
         self.cookie = 'sw_uuid=6970240725; dt_ssuid=8648042874; pex=C864C03270DED3DD8A06887A372DA219231FFAC25A9D64AE09E82AED12E416AC; ssuid=17035680; IPLOC=CN4401; SUID=81A316742F20910A000000005BB426A8; SUV=1538533031927157; ld=illlllllll2bHjz7lllllVm1J$DlllllNxz0kyllllwllllllZlll5@@@@@@@@@@; ABTEST=8|1538811559|v1; weixinIndexVisited=1; SNUID=6DEF164236304E62AB9713FD36B22BA3; JSESSIONID=aaawyoZ7RLDDB-80ChIzw; sct=8'
 
-    def get_friends(self):
+    def get_hy(self):
         itchat.login()
         if os.path.exists(os.path.abspath(os.path.dirname(__file__)) + '\data') is not True:
             os.mkdir(os.path.abspath(os.path.dirname(__file__)) + '\data')  # 创建数据目录
@@ -96,14 +96,25 @@ class WeChat(object):
             print('获取好友信息失败！')
             print('error1：请确保该微信号有好友！\nerror2：若该微信号有好友，那么此微信号已不允许登录网页微信！')
 
-    def get_public(self, names=None):
+    def get_gzh(self, names=None, iproxy=None):
         '''通过搜狗获取微信公众号'''
         dbs = new_session()
         ua = UserAgent()
+        using_proxy = {}
         headers = {'User-Agent': ua.random, 'Cookie': self.cookie, 'Referer': 'https://weixin.sogou.com/'}
-        proxies = dbs.query(Proxy).all()
-        proxy = random.choice(proxies)
-        using_proxy = {'{}'.format(proxy.protocol): '{}:{}'.format(proxy.address, proxy.port)}
+        if iproxy is not None or iproxy != '':
+            proxy1 = {'https': iproxy}
+            proxy2 = {'http': iproxy}
+            if requests.get('https://www.baidu.com', proxies=proxy1, timeout=4).status_code == 200:
+                using_proxy = proxy1
+            elif requests.get('https://www.baidu.com', proxies=proxy2, timeout=4).status_code == 200:
+                using_proxy = proxy2
+            else:
+                print('手动输入的IP地址测试为无效！采用数据库代理')
+                proxies = dbs.query(Proxy).all()
+                proxy = random.choice(proxies)
+                using_proxy = {'{}'.format(proxy.protocol): '{}:{}'.format(proxy.address, proxy.port)}
+
         for name in names:
             try:
                 html = requests.get('https://weixin.sogou.com/weixin?type=1&s_from=input&query={}'
@@ -125,6 +136,7 @@ class WeChat(object):
                                    'certification': certification,
                                    'recent_article': recent_article}
                     dbs.bulk_insert_mappings(Public, public_data)
+
                     headers2 = {'Referer': 'https://weixin.sogou.com/weixin?type=1&s_from=input&query={}'
                                     .format(urllib.parse.quote(name)), 'User-Agent': ua.random, 'Cookie': self.cookie}
                     html2 = requests.get(articles_link, headers=headers2, timeout=4, proxies=using_proxy).text
@@ -133,6 +145,7 @@ class WeChat(object):
                     pattern = re.compile(r'("content_url"\:"\S*")')
                     js_result = re.findall(pattern, js_text[0])[0]
                     headers3 = {'User-Agent': ua.random, 'Cookie': self.cookie}
+
                     for i in js_result:
                         k = [j for j in i.split(',')]
                         for o in k:
@@ -168,8 +181,8 @@ class WeChat(object):
                 using_proxy = '{}:{}'.format(proxy.address, proxy.port)
                 continue
 
-    def run_friend(self):
-        self.get_friends()
+    def run_hy(self):
+        self.get_hy()
 
-    def run_public(self, names=None):
-        self.get_public(names)
+    def run_gzh(self, names=None, iproxy=None):
+        self.get_gzh(names, iproxy)
