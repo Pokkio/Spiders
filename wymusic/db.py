@@ -29,6 +29,20 @@ class Comments(Base):
         return '%s<%r>' % (self.__class__.__name__, self.userId)
 
 
+class Proxies(Base):
+
+    __tablename__ = 'proxies'
+
+    id = Column(BigInteger().with_variant(Integer, 'sqlite'), primary_key=True, comment='ID')
+    address = Column(String(24), nullable=False, comment='ip地址', primary_key=True)
+    protocol = Column(String(8), nullable=True, comment='协议')
+    port = Column(String(4), nullable=False, comment='端口')
+    used = Column(Integer, nullable=False, comment='可用')
+
+    def __repr__(self):
+        return '<%s:%s>' % (self.address, self.port)
+
+
 def create_db():
     try:
         Base.metadata.create_all(engine)
