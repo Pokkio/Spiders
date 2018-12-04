@@ -4,6 +4,7 @@ import jieba
 from wordcloud import WordCloud
 from wymusic.db import new_session, Comments
 import os
+from scipy.misc import imread
 
 
 class Ciyun(object):
@@ -11,7 +12,8 @@ class Ciyun(object):
     def __init__(self):
         self.sess = new_session()
         # 写入font_path参数可以解决中文乱码问题
-        self.wc = WordCloud(random_state=1, font_path=r'font.ttf')
+        self.bg = imread(r'./bg.jpg')
+        self.wc = WordCloud(random_state=1, font_path=r'font.ttf', mask=self.bg)
 
     def to_jpg(self, song_ids):
         try:
