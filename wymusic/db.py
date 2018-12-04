@@ -26,7 +26,7 @@ class Comments(Base):
     timed = Column(String(32), nullable=False, comment='评论时间')
 
     def __repr__(self):
-        return '%s<%r>' % (self.__class__.__name__, self.userId)
+        return '%s<%r>' % (self.__class__.__name__, self.user_id)
 
 
 class Proxies(Base):
