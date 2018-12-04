@@ -3,6 +3,7 @@
 import jieba
 from wordcloud import WordCloud
 from wymusic.db import new_session, Comments
+import os
 
 
 class Ciyun(object):
@@ -29,6 +30,7 @@ class Ciyun(object):
             print(e)
         finally:
             self.sess.close()
+            os.remove('comments.txt')
 
     def run(self, song_ids):
         self.to_jpg(song_ids)

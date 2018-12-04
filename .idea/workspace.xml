@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="440b3936-ecc9-4fb3-9820-4f3c7e307efa" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/wymusic/wordba.py" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/wymusic/comments.txt" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wymusic/cmd.py" afterPath="$PROJECT_DIR$/wymusic/cmd.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wymusic/db.py" afterPath="$PROJECT_DIR$/wymusic/db.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/wymusic/wordba.py" afterPath="$PROJECT_DIR$/wymusic/wordba.py" />
     </list>
     <ignored path="Spiders.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -60,7 +59,7 @@
       <file leaf-file-name="wordba.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/wymusic/wordba.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="729">
+            <state relative-caret-position="567">
               <caret line="27" column="32" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
               <folding>
                 <element signature="e#25#37#0" expanded="true" />
@@ -928,14 +927,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/wymusic/comments.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="162">
-          <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/wymusic/ciyun.jpg">
       <provider selected="true" editor-type-id="images">
         <state />
@@ -966,9 +957,17 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/wymusic/comments.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1063">
+          <caret line="1" column="6" selection-start-line="1" selection-start-column="6" selection-end-line="1" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/wymusic/wordba.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="729">
+        <state relative-caret-position="567">
           <caret line="27" column="32" selection-start-line="27" selection-start-column="32" selection-end-line="27" selection-end-column="32" />
           <folding>
             <element signature="e#25#37#0" expanded="true" />
