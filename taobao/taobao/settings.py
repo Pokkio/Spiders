@@ -20,10 +20,10 @@ NEWSPIDER_MODULE = 'taobao.spiders'
 
 # Obey robots.txt rules
 ROBOTSTXT_OBEY = False
-REDIRECT_ENABLED = True
-RETRY_ENABLED = True
-RETRY_TIMES = 2
-RETRY_HTTP_CODES = [500, 503, 504, 400, 408]
+# REDIRECT_ENABLED = True
+# RETRY_ENABLED = True
+# RETRY_TIMES = 2
+# RETRY_HTTP_CODES = [500, 503, 504, 400, 408]
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
@@ -43,10 +43,10 @@ COOKIES_ENABLED = True
 # TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-DEFAULT_REQUEST_HEADERS = {
-  'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)'
-                ' Chrome/62.0.3202.75    Safari/537.36',
-}
+# DEFAULT_REQUEST_HEADERS = {
+#   'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko)'
+#                 ' Chrome/62.0.3202.75    Safari/537.36',
+# }
 
 # Enable or disable spider middlewares
 # See https://doc.scrapy.org/en/latest/topics/spider-middleware.html
@@ -72,6 +72,8 @@ DOWNLOADER_MIDDLEWARES = {
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'taobao.pipelines.TaobaoPipeline': 300,
+   # 'scrapy_redis.pipelines.RedisPipeline': 301
+
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -95,14 +97,14 @@ ITEM_PIPELINES = {
 # HTTPCACHE_IGNORE_HTTP_CODES = []
 # HTTPCACHE_STORAGE = 'scrapy.extensions.httpcache.FilesystemCacheStorage'
 
-SCHEDULER = 'scrapy_redis.scheduler.Scheduler'  # 启用Redis调度存储请求队列
-SCHEDULER_PERSIST = True  # 不清除Redis队列
-DUPEFILTER_CLASS = 'scrapy_redis.dupefilter.REPDupeFilter'  # 去重
-SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.SpiderPriorityQueue'
-SCHEDULER_IDLE_BEFORE_CLOSE = 10
-REDIS_HOST = '127.0.0.1'
-REDIS_PORT = 6379
-REDIS_URL = None
+# SCHEDULER = 'scrapy_redis.scheduler.Scheduler'  # 启用Redis调度存储请求队列
+# SCHEDULER_PERSIST = True  # 不清除Redis队列
+# DUPEFILTER_CLASS = 'scrapy_redis.dupefilter.RFPDupeFilter'  # 去重
+# SCHEDULER_QUEUE_CLASS = 'scrapy_redis.queue.SpiderPriorityQueue'
+# SCHEDULER_IDLE_BEFORE_CLOSE = 10
+# REDIS_HOST = '127.0.0.1'
+# REDIS_PORT = 6379
+# REDIS_URL = None
 
 MY_USER_AGENT = [
     "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; AcooBrowser; .NET CLR 1.1.4322; .NET CLR 2.0.50727)",
