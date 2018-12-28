@@ -7,7 +7,6 @@ from ..items import TaobaoItem
 class TbaoSpider(scrapy.Spider):
     name = 'tbao'
     allowed_domains = ['taobao.com']
-    # 爬取搜索 男生鞋子 关键字第一页数据
     # q: 搜索关键字 data-value: 页码 ajax: 返回接口 callback: 数据格式
 
     def start_requests(self):
