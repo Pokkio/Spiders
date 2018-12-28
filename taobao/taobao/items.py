@@ -6,6 +6,8 @@
 # https://doc.scrapy.org/en/latest/topics/items.html
 
 import scrapy
+from scrapy.loader import ItemLoader
+from scrapy.loader.processors import MapCompose, TakeFirst, Join
 
 
 class TaobaoItem(scrapy.Item):
@@ -17,3 +19,10 @@ class TaobaoItem(scrapy.Item):
     raw_title = scrapy.Field()  # 商品名称
     view_price = scrapy.Field()  # 商品价格
     view_sales = scrapy.Field()  # 商品销售量
+
+
+class TaobaoSpiderLoader(ItemLoader):
+    default_item_class = TaobaoItem
+    default_input_processor = MapCompose(lambda s: s.strip())
+    default_output_processor = TakeFirst()
+    description_out = Join()

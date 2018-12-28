@@ -16,17 +16,20 @@ class TaobaoPipeline(object):
 
     def open_spider(self, spider):
         self.client = MongoClient(host=self.host, port=self.port)
-        db = self.client['MONGODB_DBNAME']
+        db = self.client[settings['MONGODB_DBNAME']]
         self.post = db[settings['MONGODB_DOCNAME']]
 
     def process_item(self, item, spider):
-        if item.get('category') in self.category_seen:
-            raise DropItem('Duplicate item found: %s' % item)
-        else:
-            self.category_seen.add(item.get('id'))
-            item_dict = dict(item)
-            self.post.insert(item_dict)
-            return item
+        try:
+            if item.get('category') in self.category_seen:
+                raise DropItem('Duplicate item found: %s' % item)
+            else:
+                self.category_seen.add(item.get('id'))
+                item_dict = dict(item)
+                self.post.insert(item_dict)
+                return item
+        except BaseException as e:
+            raise e
 
     def close_spider(self, spider):
         self.client.close()

@@ -3,7 +3,9 @@
 import scrapy
 from scrapy import signals
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
+from scrapy.downloadermiddlewares.retry import RetryMiddleware, response_status_message
 import random
+import time
 
 
 class TaobaoSpiderMiddleware(object):
@@ -72,13 +74,48 @@ class MyUserAgentMiddleware(UserAgentMiddleware):
 
 class ProxyMiddleware(object):
 
-    def __init__(self, ip):
-        self.ip = ip
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        return cls(ip=crawler.settings.get('PROXIES'))
-
     def process_request(self, request, spider):
-        ip = random.choice(self.ip)
-        request.meta['proxy'] = ip
+        import pymongo
+        client = pymongo.MongoClient(host='localhost', port=27017)
+        db = client.taobao
+        collection = db.proxy
+        print('加上代理中...')
+        if request.meta.get('proxy'):
+            # 如果已有代理即更换
+            collection.delete_one({'proxy': request.meta['proxy']})
+            request.meta['proxy'] = collection.find()[0]['proxy']
+            print('已完成代理的更换..')
+        else:
+            request.meta['proxy'] = collection.find()[0]['proxy']
+            print('已完成代理的添加..')
+        client.close()
+
+
+class TBaoRetryMiddleware(RetryMiddleware):
+
+    def delete_proxy(self, proxy):
+        if proxy:
+            import pymongo
+            client = pymongo.MongoClient(host='localhost', port=27017)
+            db = client.taobao
+            collection = db.proxy
+            collection.delete_one({'proxy': proxy})
+            print('{} 代理已删除' % proxy)
+            client.close()
+        else:
+            print('当前并没有使用代理！')
+
+    def process_response(self, request, response, spider):
+        if response.status in self.retry_http_codes:
+            reason = response_status_message(response.status)
+            self.delete_proxy(request.meta.get(['proxy'], False))
+            time.sleep(random.randint(1, 3))
+            return self._retry(request, reason, spider) or response
+        return response
+
+    def process_exception(self, request, exception, spider):
+        if isinstance(exception, self.EXCEPTIONS_TO_RETRY) and \
+         not request.meta.get('dont_retry', False):
+            self.delete_proxy(request.meta.get('proxy', False))
+            time.sleep(random.randint(1, 3))
+            return self._retry(request, exception, spider)

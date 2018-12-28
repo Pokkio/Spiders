@@ -1,0 +1,15 @@
+MANIFEST.in
+scrapy.cfg
+clay.taobao.egg-info/PKG-INFO
+clay.taobao.egg-info/SOURCES.txt
+clay.taobao.egg-info/dependency_links.txt
+clay.taobao.egg-info/requires.txt
+clay.taobao.egg-info/top_level.txt
+taobao/__init__.py
+taobao/items.py
+taobao/middlewares.py
+taobao/pipelines.py
+taobao/settings.py
+taobao/spiders/__init__.py
+taobao/spiders/cookies.py
+taobao/spiders/tbao.py
