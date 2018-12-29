@@ -23,7 +23,7 @@ ROBOTSTXT_OBEY = False
 # REDIRECT_ENABLED = True
 # RETRY_ENABLED = True
 # RETRY_TIMES = 2
-# RETRY_HTTP_CODES = [500, 503, 504, 400, 408]
+RETRY_HTTP_CODES = [500, 502, 503, 504, 522, 524, 408]  # 重试状态码
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 # CONCURRENT_REQUESTS = 32
@@ -37,7 +37,7 @@ ROBOTSTXT_OBEY = False
 # CONCURRENT_REQUESTS_PER_IP = 16
 
 # Disable cookies (enabled by default)
-COOKIES_ENABLED = True
+COOKIES_ENABLED = False
 
 # Disable Telnet Console (enabled by default)
 # TELNETCONSOLE_ENABLED = False
@@ -58,8 +58,9 @@ COOKIES_ENABLED = True
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
     'taobao.middlewares.MyUserAgentMiddleware': 400,
-    'taobao.middlewares.ProxyMiddleware': 401,
-    'taobao.middlewares.TBaoRetryMiddleware': 302,
+    'taobao.middlewares.ProcessExceptionMiddleware': 120,
+    'taobao.middlewares.ProxyMiddleware': 125,
+    'taobao.middlewares.TBaoRetryMiddleware': 502,
 }
 
 # Enable or disable extensions
@@ -129,5 +130,5 @@ MY_USER_AGENT = [
 
 MONGODB_HOST = '127.0.0.1'
 MONGODB_PORT = 27017
-MONGODB_DBNAME = 'taobao'
-MONGODB_DOCNAME = 'manShoes'
+MONGODB_DBNAME = 'taobao'  # 集合
+MONGODB_DOCNAME = 'goods'  # 文档

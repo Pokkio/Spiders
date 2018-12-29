@@ -1,9 +1,13 @@
 # -*- coding: utf-8 -*-
 
-import scrapy
 from scrapy import signals
+from scrapy.http import HtmlResponse
 from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 from scrapy.downloadermiddlewares.retry import RetryMiddleware, response_status_message
+from scrapy.downloadermiddlewares.httpproxy import HttpProxyMiddleware
+from twisted.internet import defer
+from twisted.internet.error import TCPTimedOutError, TimeoutError, DNSLookupError, ConnectError, \
+    ConnectionDone, ConnectionLost, ConnectionRefusedError
 import random
 import time
 
@@ -72,7 +76,7 @@ class MyUserAgentMiddleware(UserAgentMiddleware):
         request.headers['User-Agent'] = agent
 
 
-class ProxyMiddleware(object):
+class ProxyMiddleware(HttpProxyMiddleware):
 
     def process_request(self, request, spider):
         import pymongo
@@ -83,25 +87,29 @@ class ProxyMiddleware(object):
         if request.meta.get('proxy'):
             # 如果已有代理即更换
             collection.delete_one({'proxy': request.meta['proxy']})
-            request.meta['proxy'] = collection.find()[0]['proxy']
-            print('已完成代理的更换..')
+            update_proxy = collection.find()[0]['proxy']
+            request.meta['proxy'] = update_proxy
+            print('已完成 %s 代理的更换..' % update_proxy)
         else:
-            request.meta['proxy'] = collection.find()[0]['proxy']
-            print('已完成代理的添加..')
+            update_proxy = collection.find()[0]['proxy']
+            request.meta['proxy'] = update_proxy
+            print('已完成 %s 代理的添加..' % update_proxy)
         client.close()
 
 
 class TBaoRetryMiddleware(RetryMiddleware):
 
+    client = None
+    collection = None
+
     def delete_proxy(self, proxy):
         if proxy:
             import pymongo
-            client = pymongo.MongoClient(host='localhost', port=27017)
-            db = client.taobao
-            collection = db.proxy
-            collection.delete_one({'proxy': proxy})
-            print('{} 代理已删除' % proxy)
-            client.close()
+            self.client = pymongo.MongoClient(host='localhost', port=27017)
+            db = self.client.taobao
+            self.collection = db.proxy
+            self.collection.delete_one({'proxy': proxy})
+            print('%s 代理已删除！' % proxy)
         else:
             print('当前并没有使用代理！')
 
@@ -109,6 +117,9 @@ class TBaoRetryMiddleware(RetryMiddleware):
         if response.status in self.retry_http_codes:
             reason = response_status_message(response.status)
             self.delete_proxy(request.meta.get(['proxy'], False))
+            request.meta['proxy'] = self.collection.find()[0]['proxy']
+            print('重新添加代理！')
+            self.client.close()
             time.sleep(random.randint(1, 3))
             return self._retry(request, reason, spider) or response
         return response
@@ -117,5 +128,35 @@ class TBaoRetryMiddleware(RetryMiddleware):
         if isinstance(exception, self.EXCEPTIONS_TO_RETRY) and \
          not request.meta.get('dont_retry', False):
             self.delete_proxy(request.meta.get('proxy', False))
+            request.meta['proxy'] = self.collection.find()[0]['proxy']
+            print('重新添加代理！')
             time.sleep(random.randint(1, 3))
             return self._retry(request, exception, spider)
+
+
+class ProcessExceptionMiddleware(object):
+
+    ALL_EXCEPTIONS = (defer.TimeoutError, TimeoutError, TCPTimedOutError,
+                      ConnectError, ConnectionRefusedError, ConnectionLost,
+                      ConnectionDone, ConnectionRefusedError, DNSLookupError)
+
+    def process_response(self, request, response, spider):
+        if str(response.status).startswith('4') or str(response.status).startswith('5'):
+            response = HtmlResponse(url='')
+            return response
+        return response
+
+    def process_exception(self, request, exception, spider):
+        if isinstance(exception, self.ALL_EXCEPTIONS):
+            import pymongo
+            client = pymongo.MongoClient(host='localhost', port=27017)
+            db = client.taobao
+            collection = db.proxy
+            collection.delete_one({'proxy': request.meta['proxy']})
+            request.meta['proxy'] = collection.find()[0]['proxy']
+            print('Got exception: %s' % (exception))
+            response = HtmlResponse(url='exception')
+            return response
+        print('not contained exception: %s' % exception)
+
+

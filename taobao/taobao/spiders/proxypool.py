@@ -9,11 +9,13 @@ import time
 class Proxies(object):
     """获取代理ip"""
 
-    def __init__(self, page=2):
+    def __init__(self, page=1):
         self.proxies = []
         self.verify_pro = []
         self.page = page
-        self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/45.0.2454.101 Safari/537.36'}
+        self.headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64)'
+                                      'AppleWebKit/537.36 (KHTML, like Gecko)'
+                                      'Chrome/45.0.2454.101 Safari/537.36'}
         print('正在爬取西刺代理...')
         self.get_proxies()
         self.get_proxies_nn()
@@ -83,7 +85,7 @@ class Proxies(object):
             try:
                 if requests.get('http://www.baidu.com', proxies=proxies, timeout=3).status_code == 200:
                     print('可使用的代理 %s' % proxy)
-                    new_queue.put({'proxy': proxy})
+                    new_queue.put({'proxy': proxy, 'protocol': protocol})
             except:
                 print('已失效的代理 %s' % proxy)
 
@@ -97,5 +99,3 @@ if __name__ == '__main__':
     collection.insert_many(proxie)
     print('代理已全部插入到数据库!')
     client.close()
-
-
