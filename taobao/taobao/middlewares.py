@@ -148,12 +148,6 @@ class ProcessExceptionMiddleware(object):
 
     def process_exception(self, request, exception, spider):
         if isinstance(exception, self.ALL_EXCEPTIONS):
-            import pymongo
-            client = pymongo.MongoClient(host='localhost', port=27017)
-            db = client.taobao
-            collection = db.proxy
-            collection.delete_one({'proxy': request.meta['proxy']})
-            request.meta['proxy'] = collection.find()[0]['proxy']
             print('Got exception: %s' % (exception))
             response = HtmlResponse(url='exception')
             return response
