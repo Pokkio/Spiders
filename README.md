@@ -5,6 +5,7 @@
 :spider: wechat (微信好友及文章)  
 :spider: wymusic (网易云歌曲评论)  
 :spider: taobao (淘宝商品爬取)
+:spider: autohome (汽车之家论坛文章)
 
 # :spider:  Project Feature
 ****
@@ -13,6 +14,8 @@
 :spider: wechat use SQLite3 and free proxy sogou api, wechat api to catch.  
 :spider: wymusic use SQLite3, jieba and wordcloud to show the lyrics.  
 :spider: taobao
+:spider: autohome The purpose is to learn the font anti-climbing
+
 
 # :spider:  How to use
 ****
