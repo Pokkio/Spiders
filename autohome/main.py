@@ -19,7 +19,7 @@ class Autohome:
         ttf_name = 'font/auto.ttf'
         url = 'https://club.autohome.com.cn/bbs/thread/bf9817b6ec7ad790/78316566-1.html#pvareaid=6825493'
         resp_code = requests.get(url, headers)  # 获取页面源码
-        ttf_pattern = re.compile(r",url\('(//.*.ttf)'\)")
+        ttf_pattern = re.compile(r",url\('(//.*\.ttf)'\)")
         ttf_re = re.search(ttf_pattern, resp_code.text)  # 获取ttf字体部分链接
         try:
             if ttf_re:
@@ -62,8 +62,6 @@ class Autohome:
                 print('content_after: {}'.format(content.decode('utf8')))
             else:
                 print('匹配字体链接失败，请添加ip代理！')
-        except AssertionError:
-            print('获取ttf字体文件资源失败！')
         except (BaseException, TimeoutError) as e:
             print('爬取错误: %s' % e)
 
