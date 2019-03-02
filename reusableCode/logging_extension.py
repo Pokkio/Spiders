@@ -36,5 +36,5 @@ class SpiderOpenCloseLogging:
 
     def item_scraped(self, item, spider):
         self.item_scraped += 1
-        if self.items_count % self.item_count == 0:
-            logger.info('scraped %d items', self.items_count)
+        if self.items_scraped % self.item_count == 0:
+            logger.info('scraped %d items', self.items_scraped)

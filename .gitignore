@@ -1,3 +1,6 @@
 .vscode/launch.json
 .vscode/settings.json
 .idea
+dbs
+logs
+scrapydweb_settings_v1.py
