@@ -6,46 +6,46 @@ from ..items import YunqiBookListItem, YunqiBookDetailItem
 from scrapy_redis.spiders import RedisSpider
 
 
-class YunqiQqComSpider(RedisSpider, CrawlSpider):
+class YunqiQqComSpider(RedisSpider):
     name = 'yunqi.qq.com'
     allowed_domains = ['yunqi.qq.com']
-    start_urls = ['http://yunqi.qq.com/bk/so2/n30p1']
+    redis_key = 'yunqi.qq.com:start_urls'
 
-    rules = (
-        Rule(LinkExtractor(allow=r'/bk/so2/n30p\d+'), callback='parse_book_list', follow=True),
-    )
+    # rules = (
+    #     Rule(LinkExtractor(allow=r'/bk/so2/n30p\d+'), callback='parse_book_list', follow=True),
+    # )
 
-    def parse_book_list(self, response):
-        books = response.xpath(".//div[@class='book']")
-        for book in books:
-            novel_image_url = book.xpath("./a/img/@src").extract_first()
-            novel_id = book.xpath("./div[@class='book_info']/h3/a/@id").extract_first()
-            novel_name = book.xpath("./div[@class='book_info']/h3/a/text()").extract_first()
-            novel_link = book.xpath("./div[@class='book_info']/h3/a/@href").extract_first()
-            novel_infos = book.xpath("./div[@class='book_info']/dl/dd[@class='w_auth']")
-            if len(novel_infos) > 4:
-                novel_author = novel_infos[0].xpath('./a/text()').extract_first()
-                novel_type = novel_infos[1].xpath('./a/text()').extract_first()
-                novel_status = novel_infos[2].xpath('./text()').extract_first()
-                novel_update_time = novel_infos[3].xpath('./text()').extract_first()
-                novel_words = novel_infos[4].xpath('./text()').extract_first()
-            else:
-                novel_author = ''
-                novel_type = ''
-                novel_status = ''
-                novel_update_time = ''
-                novel_words = 0
-            print(novel_link)
-            book_list_item = YunqiBookListItem(novelId=novel_id, novelName=novel_name,
-                                               novelLink=novel_link, novelAuthor=novel_author,
-                                               novelType=novel_type, novelStatus=novel_status,
-                                               novelUpdateTime=novel_update_time, novelWords=novel_words,
-                                               novelImageUrl=novel_image_url)
-            yield book_list_item
+    def parse(self, response):
+        try:
+            for book in response.xpath("//*[@id='detailedBookList']"):
+                print(book)
+                # novel_image_url = 'http:' + book.xpath("./div[1]/a/img/@src")[0]
+                # print(novel_image_url)
+                # novel_id = book.xpath("./div[@class='book_info']/h3/a/@id")
+                # novel_name = book.xpath("./div[@class='book_info']/h3/a/text()").extract_first()
+                # novel_link = book.xpath("./div[@class='book_info']/h3/a/@href").extract_first()
+                # novel_infos = book.xpath("./div[@class='book_info']/dl/dd[@class='w_auth']")
+                # if len(novel_infos) > 4:
+                #     novel_author = novel_infos[0].xpath('./a/text()').extract_first()
+                #     novel_type = novel_infos[1].xpath('./a/text()').extract_first()
+                #     novel_status = novel_infos[2].xpath('./text()').extract_first()
+                #     novel_update_time = novel_infos[3].xpath('./text()').extract_first()
+                #     novel_words = novel_infos[4].xpath('./text()').extract_first()
+                # else:
+                #     novel_author = ''
+                #     novel_type = ''
+                #     novel_status = ''
+                #     novel_update_time = ''
+                #     novel_words = 0
+                # print(novel_link)
+                # book_list_item = YunqiBookListItem(novelImageUrl=novel_image_url)
+                # yield book_list_item
 
-            request = scrapy.Request(url=novel_link, callback=self.parse_book_detail)
-            request.meta['novel_id'] = novel_id
-            yield request
+                # request = scrapy.Request(url=novel_link, callback=self.parse_book_detail)
+                # request.meta['novel_id'] = novel_id
+                # yield request
+        except (BaseException, TimeoutError, ConnectionError, AttributeError, IndexError) as e:
+            raise e
 
     def parse_book_detail(self, response):
         novel_id = response.meta['novel_id']

@@ -19,7 +19,7 @@ NEWSPIDER_MODULE = 'yunqibook.spiders'
 #USER_AGENT = 'yunqibook (+http://www.yourdomain.com)'
 
 # Obey robots.txt rules
-# ROBOTSTXT_OBEY = True
+ROBOTSTXT_OBEY = False
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS = 32
@@ -66,6 +66,7 @@ DOWNLOADER_MIDDLEWARES = {
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
    'yunqibook.pipelines.YunqibookPipeline': 300,
+   'scrapy_redis.pipelines.RedisPipeline': 301
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -135,10 +136,10 @@ REDIS_HOST = '127.0.0.1'
 REDIS_PORT = 6379
 
 # 去重队列的信息
-FILTER_URL = None
-FILTER_HOST = 'localhost'
-FILTER_PORT = 6379
-FILTER_DB = 0
+# FILTER_URL = None
+# FILTER_HOST = 'localhost'
+# FILTER_PORT = 6379
+# FILTER_DB = 0
 
 MONGO_URI = 'mongodb://127.0.0.1:27017,127.0.0.1:27018,127.0.0.1:27019'
 MONGO_DATABASE = 'yunqi'

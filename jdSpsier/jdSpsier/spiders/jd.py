@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import scrapy
+import scrapy.core.scheduler
 from urllib.parse import quote
 import re
 from lxml import etree

@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from pyquery import PyQuery
-from scrapy_codes.lianjia.lianjia.items import LianjiaItem
+from ..items import LianjiaItem
 import time
 
 
