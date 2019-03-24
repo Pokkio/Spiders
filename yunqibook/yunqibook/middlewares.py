@@ -2,6 +2,8 @@
 
 from scrapy import signals
 import random
+from twisted.internet.error import ConnectionLost
+from scrapy.http.response import Response
 
 
 class YunqibookSpiderMiddleware(object):
@@ -114,3 +116,15 @@ class RandomUserAgent(object):
 
     def process_request(self, request, spider):
         request.headers.setdefault('User-Agent', random.choice(self.agents))
+
+
+class YunqiExceptionMiddleware:
+    ALL_EXCEPTIONS = (IndexError, TimeoutError,
+                      ConnectionRefusedError,
+                      ConnectionLost, IOError)
+
+    def process_exception(self, request, exception, spider):
+        if isinstance(exception, self.ALL_EXCEPTIONS):
+            print('Got exception: %s' % exception)
+            response = Response(url='exception')
+        return response

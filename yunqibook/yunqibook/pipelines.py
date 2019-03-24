@@ -7,22 +7,21 @@ import re
 
 class YunqibookPipeline(object):
 
-    def __init__(self, mongo_uri, mongo_db, replicaset):
+    # TODO(CLay): add function of MongoDB's cluster
+    def __init__(self, mongo_uri, mongo_db):
         self.mongo_uri = mongo_uri
         self.mongo_db = mongo_db
-        self.replicaset = replicaset
 
     @classmethod
     def from_crawler(cls, crawler):
         return cls(
             mongo_uri=crawler.settings.get('MONGO_URI'),
             mongo_db=crawler.settings.get('MONGO_DATABASE', 'yunqi'),
-            replicaset=crawler.settings.get('REPLICASET')
         )
 
     def open_spider(self, spider):
         self.client = pymongo.MongoClient(
-            self.mongo_uri, replicaset=self.replicaset)
+            self.mongo_uri)
         self.db = self.client[self.mongo_db]
 
     def close_spider(self, spider):
@@ -30,9 +29,9 @@ class YunqibookPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, YunqiBookListItem):
-            self._process_booklist_item(item)
+            self._process_booklist_item(item, spider)
         else:
-            self._process_bookdetail_item(item)
+            self._process_bookdetail_item(item, spider)
         return item
 
     def _process_booklist_item(self, item, spider):

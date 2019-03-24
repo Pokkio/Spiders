@@ -20,14 +20,15 @@ class YunqiBookListItem(scrapy.Item):
     novelStatus = scrapy.Field()  # 状态
     novelUpdateTime = scrapy.Field()  # 更新时间
     novelWords = scrapy.Field()  # 字数
-    novelImageUrl = scrapy.Field()  # 封面
+    novelInfo = scrapy.Field()  # 简介
 
 
 class YunqiBookDetailItem(scrapy.Item):
     '''
     存储小说的详细信息
     '''
-    novelId = scrapy.Field()  # id
+    novelId = scrapy.Field()  # 小说id
+    novelName = scrapy.Field()  # 名称
     novelLabel = scrapy.Field()  # 标签
     novelAllClick = scrapy.Field()  # 总点击量
     novelMonthClick = scrapy.Field()  # 月点击量

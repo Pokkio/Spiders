@@ -27,6 +27,7 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See https://doc.scrapy.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
+# 下载延时
 DOWNLOAD_DELAY = 3
 # The download delay setting will honor only one of:
 #CONCURRENT_REQUESTS_PER_DOMAIN = 16
@@ -54,6 +55,7 @@ COOKIES_ENABLED = False
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 DOWNLOADER_MIDDLEWARES = {
    'yunqibook.middlewares.RandomUserAgent': 410,
+   'yunqibook.middlewares.YunqiExceptionMiddleware': 120
 }
 
 # Enable or disable extensions
@@ -65,17 +67,17 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See https://doc.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-   'yunqibook.pipelines.YunqibookPipeline': 300,
-   'scrapy_redis.pipelines.RedisPipeline': 301
+   'yunqibook.pipelines.YunqibookPipeline': 301,
+   'scrapy_redis.pipelines.RedisPipeline': 300
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://doc.scrapy.org/en/latest/topics/autothrottle.html
-AUTOTHROTTLE_ENABLED = True
+# AUTOTHROTTLE_ENABLED = True
 # The initial download delay
-AUTOTHROTTLE_START_DELAY = 5
+# AUTOTHROTTLE_START_DELAY = 2
 # The maximum download delay to be set in case of high latencies
-AUTOTHROTTLE_MAX_DELAY = 60
+# AUTOTHROTTLE_MAX_DELAY = 60
 # The average number of requests Scrapy should be sending in parallel to
 # each remote server
 #AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
@@ -127,7 +129,6 @@ USER_AGENTS = [
     "Mozilla/5.0 (X11; U; Linux x86_64; zh-CN; rv:1.9.2.10) Gecko/20100922 Ubuntu/10.10 (maverick) Firefox/3.6.10"
 ]
 
-# 使用scrapy_redis调取器
 SCHEDULER = "scrapy_redis.scheduler.Scheduler"
 DUPEFILTER_CLASS = "scrapy_redis.dupefilter.RFPDupeFilter"
 SCHEDULER_PERSIST = True  # 在redis中保持scrapy_redis用到各个队列，从而允许暂停和暂停后恢复
@@ -136,13 +137,12 @@ REDIS_HOST = '127.0.0.1'
 REDIS_PORT = 6379
 
 # 去重队列的信息
-# FILTER_URL = None
-# FILTER_HOST = 'localhost'
-# FILTER_PORT = 6379
-# FILTER_DB = 0
+FILTER_URL = None
+FILTER_HOST = 'localhost'
+FILTER_PORT = 6379
+FILTER_DB = 0
 
-MONGO_URI = 'mongodb://127.0.0.1:27017,127.0.0.1:27018,127.0.0.1:27019'
+MONGO_URI = 'mongodb://127.0.0.1:27017'
 MONGO_DATABASE = 'yunqi'
-REPLICASET = 'repset'
 
 
