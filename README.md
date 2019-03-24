@@ -17,6 +17,7 @@
 :spider: wymusic use SQLite3, jieba and wordcloud to show the lyrics.  
 :spider: taobao
 :spider: autohome The purpose is to learn the font anti-climbing
+:spider: yunqibook
 
 
 # :spider:  How to use
