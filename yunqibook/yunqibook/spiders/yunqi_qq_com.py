@@ -22,7 +22,7 @@ class YunqiQqComSpider(RedisCrawlSpider):
         try:
             res_xpath = etree.HTML(response.text)
             for book in res_xpath.xpath("//*[@id='detailedBookList']/div[@class='book']"):
-                # TODO(CLay): perfecting functions about extraction errors.
+                # TODO(CLay): Perfecting functions about extraction errors.
                 novel_id = book.xpath(".//div[@class='book_info']/h3/a/@id")[0]
                 novel_name = book.xpath(".//div[@class='book_info']/h3/a/text()")[0]
                 novel_link = book.xpath(".//div[@class='book_info']/h3/a/@href")[0]
