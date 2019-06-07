@@ -9,6 +9,13 @@
 :spider: autoHome -- 汽车之家论坛文章   
 :spider: zbjCookie -- 猪八戒cookie自动化获取  
 :spider: jdSpider -- 京东商城单件商品爬取  
+:spider: 58City -- 广州58同城出租房  
+:spider: lianJia -- 广州链家网出租房  
+:spider: weChat -- 微信好友信息及文章  
+:spider: wyMusic -- 网易云歌曲评论  
+:spider: taoBao -- 淘宝单件商品爬取  
+:spider: autoHome -- 汽车之家论坛文章   
+:spider: qiChaCha -- 企查查关键字爬取
 
 
 # :spider:  Project Feature
