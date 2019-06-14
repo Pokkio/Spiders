@@ -1,6 +1,5 @@
 # :spider:  Spider List  
 ![](https://img.shields.io/badge/python-3.6.5-lightgrey.svg)
-****
 
 :sun_with_face: 58City：广州58同城出租房  
 :sun_with_face: lianJi：广州链家网出租房  
@@ -15,7 +14,6 @@
 
 
 # :spider:  Project Feature
-****
 58City: use Scrapy and PyQuery, output as json.  
 lianJia: use Scrapy, MongoDB and output as csv then visualize data with Amap'api.  
 weChat: use SQLite3 and free proxy sogou api, wechat api to catch.  
@@ -28,7 +26,6 @@ zbjCookie: automated get to cookies and save into redis. this program is execute
 
 
 # :spider:  How to use
-****
 ```
 python entrypoint.py
 ```
