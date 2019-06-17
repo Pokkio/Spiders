@@ -82,6 +82,7 @@ class LoginAndGetCookies:
         time.sleep(0.5)
         location = img.location
         size = img.size
+        # 页面坐标系是从左上角(0, 0)开始
         top, bottom, left, right = location['y'], location['y'] + size['height'], location['x'], location['x'] + size['width']
         return top, bottom, left, right
 
@@ -345,7 +346,7 @@ class LoginAndGetCookies:
 
 def all_cookie(u_data):
     """
-    更新全部cookie
+    获取全部cookie
     :param u_data:
     :return:
     """
@@ -356,7 +357,7 @@ def all_cookie(u_data):
 
 def single_cookie(u):
     """
-    更新单个cookie
+    获取单个cookie
     :param u:
     :return:
     """

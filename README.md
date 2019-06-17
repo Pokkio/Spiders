@@ -1,15 +1,16 @@
 ![](https://img.shields.io/badge/python-3.6.5-lightgrey.svg)    
 
-:sun_with_face: 58City：广州58同城出租房  
-:sun_with_face: lianJi：广州链家网出租房  
-:sun_with_face: weChat：微信好友信息及文章  
-:sun_with_face: wyMusic：网易云歌曲评论  
-:sun_with_face: taoBao：淘宝单件商品爬取  
-:sun_with_face: autoHome：汽车之家论坛文章   
-:sun_with_face: zbjCookie：猪八戒cookie自动化获取  
-:sun_with_face: jdSpider：京东商城单件商品爬取  
-:sun_with_face: weChat：微信好友信息及文章  
-:sun_with_face: qiChaCha：企查查关键字爬取
+:sun_with_face: 58City: 广州58同城出租房
+:sun_with_face: lianJi: 广州链家网出租房
+:sun_with_face: weChat: 微信好友信息及文章
+:sun_with_face: wyMusic: 网易云歌曲评论
+:sun_with_face: taoBao: 淘宝单件商品爬取
+:sun_with_face: autoHome: 汽车之家论坛文章
+:sun_with_face: zbjCookie: 猪八戒cookie自动化获取
+:sun_with_face: jdSpider: 京东商城单件商品爬取
+:sun_with_face: weChat: 微信好友信息及文章
+:sun_with_face: qiChaCha: 企查查关键字爬取
+:sun_with_face: baacloud: 定时登录领取流量
 
 
 # :spider:  Project Feature
@@ -21,7 +22,9 @@ taoBao:
 jdSpider:  
 autoHome: The purpose is to learn the font anti-climbing.  
 yunQiBook: one machine analog distributed.  
-zbjCookie: automated get to cookies and save into redis. this program is executed regularly to ensure that cookie is valid.   
+zbjCookie: automated get to cookies and save into redis. this program is executed regularly to ensure that cookie is valid.
+baacloud: low success rate.
+
 
 
 # :spider:  How to use
